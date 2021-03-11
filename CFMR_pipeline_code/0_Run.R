@@ -1,0 +1,7 @@
+setwd("/mnt/work/william.denault/CFMR_Analysis")
+source("1_Defining_Pheno.R")
+source("2_Running_GWAS.R")
+source("3_Clumping.R")
+source("4_Extracting_SNPs.R")
+source("5_building_IV.R")
+source("6_2SLS.R")
