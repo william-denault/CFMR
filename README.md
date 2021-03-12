@@ -3,37 +3,47 @@ Cross-fitted instrument
 William R.P. Denault
 26/02/2021
 
+A complete CFMR pipeline with random splits is provided in the folder
+CFMR\_pipeline\_code.
+
 ## Cross-fitted instrument and Cross-fitting for Mendelian Randomization
 
 Here we present basic scripts to obtain a cross-fitted instrument. For
-the sake of simplicity, we don’t partition the data at random. A
-complete CFMR pipeline with random splits is provided in the folder
-CFMR\_pipeline\_code.
+the sake of simplicity, we don’t partition the data at random.
 
 ### A basic example
 
 Here we define the parameters of our analysis
 
 ``` r
-#number of individuals
+# n number of individuals
 n <- 5000
-#Number of selected SNPs
-p <- 100
-#Number of SNPs affecting the exposure among the p selected
+# p  Number of selected SNPs
+p <- 100 
+# np_act Number of SNPs affecting the exposure among the p selected SNPs
 np_act <-5
-sub_split <- 5#10 #number of split
+# sub_split Number of splits
+sub_split <- 5 
 ```
 
-Below we simulate the data, where G contains the selected SNPs (p) and
-the (np\_act) first columns contain the actual causal SNPs. X and Y are
+Below we simulate the data. G contains the selected SNPs (p) and the
+(np\_act) first columns of G contain the actual causal SNPs. X and Y are
 sampled with correlated noise (0.7) and H is the hidden confounded
 
 ``` r
 set.seed(3)
 #Y and X are sample with some correlated noise
-noise <-rmvnorm(n, mean = rep(0, 2), sigma = matrix(nrow = 2, byrow = TRUE, c(1,0.7,0.7,1) ) )                    
+noise <-rmvnorm(n, mean = rep(0, 2), sigma = matrix(nrow = 2,
+                                                    byrow = TRUE,
+                                                    c(1,0.7,0.7,1) 
+                                                    ) 
+                )                    
 #Genotype data, each of the SNP are sample at Hardy-Weinberg equilibrium for a MAF of 30%
-  G <- matrix(sample(c(0,1,2), size= (n*p), prob = c(0.7^2, 2*0.7*0.3, 0.3^2), replace = TRUE),nrow= n)          
+  G <- matrix(sample(c(0,1,2),
+                     size= (n*p),
+                     prob = c(0.7^2, 2*0.7*0.3, 0.3^2),
+                     replace = TRUE),
+              nrow= n)          
 #Hidden confounding, increase sd to increase confounding
 H <- rnorm(n, sd=1)
  
@@ -107,41 +117,27 @@ summary(res2)$coef[2,] #CFI-LASSO, at worse bias toward the null
     ##     Estimate   Std. Error      t value     Pr(>|t|) 
     ## 1.165090e+00 1.058469e-01 1.100731e+01 7.345632e-28
 
-### Some larger simulation
+### Some larger simulations
 
 Here we perform 2000 estimations of the effect of X on Y (parameter
-n=1000, p=100, np\_act=5,beta=0.08,h2=0.1) using CFI, One sample
-instrument LASSO estimate on, and a standard linear model. The function
-used for the simulations can be found at the end.
-
-``` r
-res <- list( )
-for ( i in 1:2000)
-{
-  res[[i]]  <- simu_cross_fit_IV_est (n=1000, p=100, np_act=5,beta=0.08,h2=0.1)
-}
-
-df0 <- data.frame(do.call( rbind, res))
-
-colnames(df0)[2] <- "sd"
-colnames(df0)[4] <- "p"
-colnames(df0)[5] <- "Est_type"
-df0$Est_type <- as.factor(df0$Est_type)
-df0$Estimate <- as.numeric(as.character(df0$Estimate))
-df0$sd       <- as.numeric(as.character(df0$sd))
-df0$t.value  <- as.numeric(as.character(df0$t.value))
-df0$p        <- as.numeric(as.character(df0$p))
-```
+n=5000, p=100, np\_act=5,beta=0.08,h2=0.1) using CFI, one sample
+instrument LASSO estimate, and a standard linear model. The function
+used for the simulations can be found at the end of this document or in
+the folder CFMR\_simulation\_code.
 
 ![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-Clearly, LM and IV\_Lasso are overconfident. In the plot below, we see
-that the linear model and On sample instrument LASSO have smaller
-standard errors than CFI with LASSO, which implies overconfidence in the
-significance of the estimated
-effect.
+Clearly, LM and one sample IV Lasso are overconfident and biased. In the
+plot below, we see that the linear model and On sample instrument LASSO
+have smaller standard errors than CFI with LASSO, which implies
+overconfidence in the significance of the estimated
+    effect.
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+    ## Warning: Removed 2000 rows containing non-finite values (stat_density).
+
+![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 ## Simulation function
 
