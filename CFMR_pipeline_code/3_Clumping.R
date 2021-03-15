@@ -263,7 +263,8 @@ write.table(GWAS_mother, file ="Split_10_GWAS_mother.txt", quote=FALSE, row.name
 
 ##Clumping Split 1 -----
 #keeping only SNP with pv below 10^-3
- 
+#SNP s for propensity score (PS)
+
 rm(list=ls())
 library(data.table)
 source("/home/william.denault/Causal_ART/utils.R")
@@ -277,6 +278,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh1.jpg", width = 850, height =
 manhattan.plot(chr= Split_1_GWAS_mother$`#CHROM`,
                pos= Split_1_GWAS_mother$POS,
                pvalue= Split_1_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_1_GWAS_mother[ -which(Split_1_GWAS_mother$P  >10^(-2)),]
 
@@ -317,7 +319,8 @@ for( i in 1:maxit)
 
 SNP_PS <- tt
 head(SNP_PS)
-dim(SNP_PS)
+dim(SNP_PS)#for 2 splits 1210 and 16
+# 
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_1_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
 
@@ -326,7 +329,9 @@ write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_1_
 
 
 ##Clumping Split 2 -----
-
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+#rm(list=ls())
 library(data.table)
 
 Split_2_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_2_GWAS_Maternal/Split_2_GWAS_mother.txt")
@@ -336,6 +341,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh2.jpg", width = 850, height =
 manhattan.plot(chr= Split_2_GWAS_mother$`#CHROM`,
                pos= Split_2_GWAS_mother$POS,
                pvalue= Split_2_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_2_GWAS_mother[ -which(Split_2_GWAS_mother$P  >10^(-2)),]
 
@@ -350,7 +356,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -375,12 +381,18 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+##plot( -log10(SNP_PS$P), main=2)
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_2_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
 
 
 
 ##Clumping Split 3 -----
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+##rm(list=ls())
 library(data.table)
 
 Split_3_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_3_GWAS_Maternal/Split_3_GWAS_mother.txt")
@@ -389,6 +401,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh3.jpg", width = 850, height =
 manhattan.plot(chr= Split_3_GWAS_mother$`#CHROM`,
                pos= Split_3_GWAS_mother$POS,
                pvalue= Split_3_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_3_GWAS_mother[ -which(Split_3_GWAS_mother$P  >10^(-2)),]
 
@@ -403,7 +416,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -428,11 +441,17 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+#plot( -log10(SNP_PS$P), main=3)
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_3_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
 
 
 ##Clumping Split 4 -----
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+#rm(list=ls())
 library(data.table)
 
 Split_4_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_4_GWAS_Maternal/Split_4_GWAS_mother.txt")
@@ -440,6 +459,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh4.jpg", width = 850, height =
 manhattan.plot(chr= Split_4_GWAS_mother$`#CHROM`,
                pos= Split_4_GWAS_mother$POS,
                pvalue= Split_4_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_4_GWAS_mother[ -which(Split_4_GWAS_mother$P  >10^(-2)),]
 
@@ -454,7 +474,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -479,11 +499,18 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+
+
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_4_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
 
 
 ##Clumping Split 5 -----
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+#rm(list=ls())
 library(data.table)
 
 Split_5_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_5_GWAS_Maternal/Split_5_GWAS_mother.txt")
@@ -491,6 +518,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh5.jpg", width = 850, height =
 manhattan.plot(chr= Split_5_GWAS_mother$`#CHROM`,
                pos= Split_5_GWAS_mother$POS,
                pvalue= Split_5_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_5_GWAS_mother[ -which(Split_5_GWAS_mother$P  >10^(-2)),]
 
@@ -505,7 +533,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -530,6 +558,9 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+
 
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_5_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
@@ -537,6 +568,9 @@ write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_5_
 
 
 ##Clumping Split 6 -----
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+#rm(list=ls())
 library(data.table)
 
 Split_6_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_6_GWAS_Maternal/Split_6_GWAS_mother.txt")
@@ -544,6 +578,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh6.jpg", width = 850, height =
 manhattan.plot(chr= Split_6_GWAS_mother$`#CHROM`,
                pos= Split_6_GWAS_mother$POS,
                pvalue= Split_6_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_6_GWAS_mother[ -which(Split_6_GWAS_mother$P  >10^(-2)),]
 
@@ -558,7 +593,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -583,12 +618,18 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_6_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
 
 
 
 ##Clumping Split 7 -----
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+#rm(list=ls())
 library(data.table)
 
 Split_7_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_7_GWAS_Maternal/Split_7_GWAS_mother.txt")
@@ -597,6 +638,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh7.jpg", width = 850, height =
 manhattan.plot(chr= Split_7_GWAS_mother$`#CHROM`,
                pos= Split_7_GWAS_mother$POS,
                pvalue= Split_7_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 
 SNP_PS <- Split_7_GWAS_mother[ -which(Split_7_GWAS_mother$P  >10^(-2)),]
@@ -612,7 +654,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -637,12 +679,18 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_7_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
 
 
 
 ##Clumping Split 8 -----
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+#rm(list=ls())
 library(data.table)
 
 Split_8_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_8_GWAS_Maternal/Split_8_GWAS_mother.txt")
@@ -650,6 +698,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh8.jpg", width = 850, height =
 manhattan.plot(chr= Split_8_GWAS_mother$`#CHROM`,
                pos= Split_8_GWAS_mother$POS,
                pvalue= Split_8_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_8_GWAS_mother[ -which(Split_8_GWAS_mother$P  >10^(-2)),]
 
@@ -664,7 +713,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -689,12 +738,18 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_8_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
 
 
 
 ##Clumping Split 9 -----
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+#rm(list=ls())
 library(data.table)
 
 Split_9_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_9_GWAS_Maternal/Split_9_GWAS_mother.txt")
@@ -702,6 +757,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh9.jpg", width = 850, height =
 manhattan.plot(chr= Split_9_GWAS_mother$`#CHROM`,
                pos= Split_9_GWAS_mother$POS,
                pvalue= Split_9_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_9_GWAS_mother[ -which(Split_9_GWAS_mother$P  >10^(-2)),]
 
@@ -716,7 +772,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -741,6 +797,9 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_9_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
 
@@ -748,6 +807,9 @@ write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_9_
 
 
 ##Clumping Split 10 -----
+#keeping only SNP with pv below 10^-3
+#SNP s for propensity score (PS)
+#rm(list=ls())
 library(data.table)
 
 Split_10_GWAS_mother <- fread("/mnt/work/william.denault/CFMR_Analysis/Data/Split_10_GWAS_Maternal/Split_10_GWAS_mother.txt")
@@ -755,6 +817,7 @@ jpeg(file="/mnt/cargo/william.denault/graph_CFMR/mh10.jpg", width = 850, height 
 manhattan.plot(chr= Split_10_GWAS_mother$`#CHROM`,
                pos= Split_10_GWAS_mother$POS,
                pvalue= Split_10_GWAS_mother$P)
+abline(a=-log10(5*10^(-8)), b=0)
 dev.off()
 SNP_PS <- Split_10_GWAS_mother[ -which(Split_10_GWAS_mother$P  >10^(-2)),]
 
@@ -769,7 +832,7 @@ if( length(which(SNP_PS$ID == ".")>0))#to deal without ID
 tt <-  SNP_PS[order(SNP_PS$P),]
 print("Starting Clumping")
 
-thresh <- 500000 
+thresh <- 500000#max distancez between two SNPs in the PS
 maxit  <- dim(tt)[1]
 
 
@@ -794,5 +857,11 @@ for( i in 1:maxit)
 }
 
 SNP_PS <- tt
+head(SNP_PS)
+dim(SNP_PS) #for two splits 1518 SNPS
+
 write.table(SNP_PS, file= "/mnt/work/william.denault/CFMR_Analysis/Data/Split_10_SNP_for_extraction.txt",row.names = FALSE , col.names = TRUE, quote= FALSE)
 
+
+#to continue the pipe
+#setwd(dir = "/mnt/work/william.denault/Causal_ART")

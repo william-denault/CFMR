@@ -17,7 +17,7 @@ Here we define the parameters of our analysis
 
 ``` r
 # n number of individuals
-n <- 5000
+n <- 3000
 # p  Number of selected SNPs
 p <- 100 
 # np_act Number of SNPs affecting the exposure among the p selected SNPs
@@ -31,7 +31,7 @@ Below we simulate the data. G contains the selected SNPs (p) and the
 sampled with correlated noise (0.7) and H is the hidden confounded
 
 ``` r
-set.seed(3)
+set.seed(1)
 #Y and X are sample with some correlated noise
 noise <-rmvnorm(n, mean = rep(0, 2), sigma = matrix(nrow = 2,
                                                     byrow = TRUE,
@@ -54,11 +54,37 @@ ZPI <- 0.5*apply( G[, (1:np_act)],1, mean )
 X <- ZPI+H+ noise[,2]
 #Y the exposure also affected by H
 Y <- X+H+noise[,1] #Effect of X on Y is 1
-
-cor(H,Y) #relatively large confouding
+cor(H,X)
 ```
 
-    ## [1] 0.7285258
+    ## [1] 0.6932508
+
+``` r
+cor(H,Y) # large confouding
+```
+
+    ## [1] 0.7237769
+
+``` r
+plot(X,Y,
+     main="Bivariate plot of X and Y")
+
+res0 <- lm(Y~X)
+abline(a=0,b=summary(res0)$coef[2,1], col="black", lwd=2)
+abline(a=0,b=1, col="blue", lwd=2, lty=2)
+legend( x=-5, y=7,
+        bty = "n",
+        lty= c(1,1,1,2),
+        legend=c("Confouded estimate" , "Truth"),
+        col= c("black",  "blue"),
+        lwd=rep(2,4))
+```
+
+![](README_files/figure-gfm/sim-1.png)<!-- --> The plot above shows the
+observational association (black line) between X and Y. It is is heavily
+confounded by the hidden confounder H as the correlation between H and X
+is 0.69, and the correlation between H and Y is 0.72. The blue dashed
+line represent the true effect of X on Y.
 
 ### Cross-fitting function
 
@@ -97,29 +123,37 @@ CFI <- do.call(c,res)
 #cross fitted IV, CFMR2
 res2 <- ivreg(Y~X|CFI)
 
-summary(res0)$coef[2,] #Linear model, obviously confouded effect, true effect is 1
+
+plot(X,Y, main="Estimation of the effect of X on Y")
+abline(a=0,b=summary(res0)$coef[2,1], col="black", lwd=2)
+abline(a=0,b=summary(res1)$coef[2,1], col="red", lwd=2)
+abline(a=0,b=summary(res2)$coef[2,1], col="blue", lwd=2)
+abline(a=0,b=1, col="blue", lwd=2, lty=2)
+legend( x=-5, y=7,
+        bty = "n",
+        lty= c(1,1,1,2),
+        legend=c("Linear model", "One sample instrument LASSO","CFI with LASSO" , "Truth"),
+        col= c("black", "red","blue", "blue"),
+        lwd=rep(2,4))
 ```
 
-    ##     Estimate   Std. Error      t value     Pr(>|t|) 
-    ## 1.833923e+00 7.511863e-03 2.441369e+02 0.000000e+00
+![](README_files/figure-gfm/pressure-1.png)<!-- -->
 
 ``` r
-summary(res1)$coef[2,] #One-sample LASSO, biased toward the confounded effect
+ #Linear model, obviously confouded effect, true effect is 1
+ #One-sample LASSO, biased toward the confounded effect
+ #CFI-LASSO, at worse bias toward the null
 ```
 
-    ##     Estimate   Std. Error      t value     Pr(>|t|) 
-    ## 1.304540e+00 6.780506e-02 1.923957e+01 1.230060e-79
-
-``` r
-summary(res2)$coef[2,] #CFI-LASSO, at worse bias toward the null
-```
-
-    ##     Estimate   Std. Error      t value     Pr(>|t|) 
-    ## 1.165090e+00 1.058469e-01 1.100731e+01 7.345632e-28
+The plot above shows the estimates of the effect of X on Y using
+different appraoches. CFI with LASSO (solid blue line) is the closest to
+the true effect of X on Y. One sample instrument with LASSO (solid red
+line) is biased towards the confounded estimate based on linear model
+(solid black line).
 
 ### Some larger simulations
 
-Here we perform 2000 estimations of the effect of X on Y (parameter
+Here we perform 1000 estimations of the effect of X on Y (parameter
 n=2000, p=100, np\_act=5,beta=0.08,h2=0.1) using CFI, one sample
 instrument LASSO estimate, and a standard linear model. The function
 used for the simulations can be found at the end of this document or in
