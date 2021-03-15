@@ -128,7 +128,7 @@ plot(X,Y, main="Estimation of the effect of X on Y")
 abline(a=0,b=summary(res0)$coef[2,1], col="black", lwd=2)
 abline(a=0,b=summary(res1)$coef[2,1], col="red", lwd=2)
 abline(a=0,b=summary(res2)$coef[2,1], col="blue", lwd=2)
-abline(a=0,b=1, col="blue", lwd=2, lty=2)
+abline(a=0,b=1, col="blue", lwd=4, lty=2)
 legend( x=-5, y=7,
         bty = "n",
         lty= c(1,1,1,2),
@@ -153,11 +153,11 @@ line) is biased towards the confounded estimate based on linear model
 
 ### Some larger simulations
 
-Here we perform 1000 estimations of the effect of X on Y (parameter
-n=2000, p=100, np\_act=5,beta=0.08,h2=0.1) using CFI, one sample
-instrument LASSO estimate, and a standard linear model. The function
-used for the simulations can be found at the end of this document or in
-the folder CFMR\_simulation\_code.
+Here we simulate 2000 data sets and on each of them wethe effect of X on
+Y (simulation parameters n=2000, p=100, np\_act=5,beta=0.08,h2=0.1)
+using CFI, one sample instrument LASSO estimate, and a standard linear
+model. The function used for the simulations can be found at the end of
+this document or in the folder CFMR\_simulation\_code.
 
 ![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
@@ -165,9 +165,13 @@ Clearly, LM and one sample IV Lasso are overconfident and biased. In the
 plot below, we see that the linear model and On sample instrument LASSO
 have smaller standard errors than CFI with LASSO, which implies
 overconfidence in the significance of the estimated
-effect.
+    effect.
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+    ## Warning: Removed 2000 rows containing non-finite values (stat_density).
+
+![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 ## Simulation function
 
