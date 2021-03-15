@@ -70,21 +70,22 @@ plot(X,Y,
      main="Bivariate plot of X and Y")
 
 res0 <- lm(Y~X)
-abline(a=0,b=summary(res0)$coef[2,1], col="black", lwd=2)
-abline(a=0,b=1, col="blue", lwd=2, lty=2)
+abline(a=0,b=summary(res0)$coef[2,1], col="blue", lwd=2)
+abline(a=0,b=1, col="green", lwd=2, lty=2)
 legend( x=-5, y=7,
         bty = "n",
         lty= c(1,1,1,2),
         legend=c("Confouded estimate" , "Truth"),
-        col= c("black",  "blue"),
+        col= c("blue","green"),
         lwd=rep(2,4))
 ```
 
-![](README_files/figure-gfm/sim-1.png)<!-- --> The plot above shows the
-observational association (black line) between X and Y. It is is heavily
-confounded by the hidden confounder H as the correlation between H and X
-is 0.69, and the correlation between H and Y is 0.72. The blue dashed
-line represent the true effect of X on Y.
+![](README_files/figure-gfm/sim-1.png)<!-- -->
+
+The plot above shows the observational association (blue line) between X
+and Y. It is is heavily confounded by the hidden confounder H as the
+correlation between H and X is 0.69, and the correlation between H and Y
+is 0.72. The blue dashed line represent the true effect of X on Y.
 
 ### Cross-fitting function
 
@@ -125,15 +126,15 @@ res2 <- ivreg(Y~X|CFI)
 
 
 plot(X,Y, main="Estimation of the effect of X on Y")
-abline(a=0,b=summary(res0)$coef[2,1], col="black", lwd=2)
+abline(a=0,b=summary(res0)$coef[2,1], col="blue", lwd=2)
 abline(a=0,b=summary(res1)$coef[2,1], col="red", lwd=2)
-abline(a=0,b=summary(res2)$coef[2,1], col="blue", lwd=2)
-abline(a=0,b=1, col="blue", lwd=4, lty=2)
+abline(a=0,b=summary(res2)$coef[2,1], col="green", lwd=2)
+abline(a=0,b=1, col="green", lwd=4, lty=2)
 legend( x=-5, y=7,
         bty = "n",
         lty= c(1,1,1,2),
         legend=c("Linear model", "One sample instrument LASSO","CFI with LASSO" , "Truth"),
-        col= c("black", "red","blue", "blue"),
+        col= c("blue", "red","green", "green"),
         lwd=rep(2,4))
 ```
 
@@ -146,14 +147,14 @@ legend( x=-5, y=7,
 ```
 
 The plot above shows the estimates of the effect of X on Y using
-different appraoches. CFI with LASSO (solid blue line) is the closest to
-the true effect of X on Y. One sample instrument with LASSO (solid red
-line) is biased towards the confounded estimate based on linear model
-(solid black line).
+different appraoches. CFI with LASSO (solid green line) is the closest
+to the true effect of X on Y. One sample instrument with LASSO (solid
+red line) is biased towards the confounded estimate based on linear
+model (solid blue line).
 
 ### Some larger simulations
 
-Here we simulate 2000 data sets and on each of them wethe effect of X on
+Here we simulate 3000 data sets and on each of them wethe effect of X on
 Y (simulation parameters n=2000, p=100, np\_act=5,beta=0.08,h2=0.1)
 using CFI, one sample instrument LASSO estimate, and a standard linear
 model. The function used for the simulations can be found at the end of
@@ -165,13 +166,9 @@ Clearly, LM and one sample IV Lasso are overconfident and biased. In the
 plot below, we see that the linear model and On sample instrument LASSO
 have smaller standard errors than CFI with LASSO, which implies
 overconfidence in the significance of the estimated
-    effect.
+effect.
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
-
-    ## Warning: Removed 2000 rows containing non-finite values (stat_density).
-
-![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 ## Simulation function
 
