@@ -112,7 +112,7 @@ summary(res2)$coef[2,] #CFI-LASSO, at worse bias toward the null
 ### Some larger simulations
 
 
-Here we perform 2000 estimations of the effect of X on Y (parameter n=5000, p=100, np_act=5,beta=0.08,h2=0.1) using  CFI, one sample instrument LASSO estimate, and a standard linear model. The function used for the simulations can be found at the end of this document or in the folder CFMR_simulation_code.
+Here we perform 2000 estimations of the effect of X on Y (parameter n=2000, p=100, np_act=5,beta=0.08,h2=0.1) using  CFI, one sample instrument LASSO estimate, and a standard linear model. The function used for the simulations can be found at the end of this document or in the folder CFMR_simulation_code.
 ```{r include=FALSE}
 #n integer sample size of the analysis
 #p number of selected SNP
@@ -239,7 +239,7 @@ simu_cross_fit_IV_est <- function(n,p,np_act, h2, beta )
 res <- list( )
 for ( i in 1:2000)
 {
-  res[[i]]  <- simu_cross_fit_IV_est (n=5000, p=100, np_act=5,beta=0.08,h2=0.1)
+  res[[i]]  <- simu_cross_fit_IV_est (n=2000, p=100, np_act=5,beta=0.08,h2=0.1)
 }
 
 df0 <- data.frame(do.call( rbind, res))
@@ -262,7 +262,7 @@ df0$p        <- as.numeric(as.character(df0$p))
 ggplot(df0, aes( x=Estimate, fill= Est_type))+
   geom_density(alpha=0.5)+
   geom_vline(xintercept = 0.08)+
-  annotate("text", x=0.2,y=10,label="True effect size")+
+  annotate("text", x=0.22,y=10,label="True effect size")+
   xlim( c(-0.2,0.7))+
   ggtitle("Distribution of the estimated effect of X and Y\n for each estimation approach")+ 
   scale_fill_discrete(name="Estimation Method",

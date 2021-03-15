@@ -120,7 +120,7 @@ summary(res2)$coef[2,] #CFI-LASSO, at worse bias toward the null
 ### Some larger simulations
 
 Here we perform 2000 estimations of the effect of X on Y (parameter
-n=5000, p=100, np\_act=5,beta=0.08,h2=0.1) using CFI, one sample
+n=2000, p=100, np\_act=5,beta=0.08,h2=0.1) using CFI, one sample
 instrument LASSO estimate, and a standard linear model. The function
 used for the simulations can be found at the end of this document or in
 the folder CFMR\_simulation\_code.
@@ -131,13 +131,9 @@ Clearly, LM and one sample IV Lasso are overconfident and biased. In the
 plot below, we see that the linear model and On sample instrument LASSO
 have smaller standard errors than CFI with LASSO, which implies
 overconfidence in the significance of the estimated
-    effect.
+effect.
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
-
-    ## Warning: Removed 2000 rows containing non-finite values (stat_density).
-
-![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->![](README_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
 ## Simulation function
 
