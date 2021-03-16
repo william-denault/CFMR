@@ -128,13 +128,13 @@ res2 <- ivreg(Y~X|CFI)
 plot(X,Y, main="Estimation of the effect of X on Y")
 abline(a=0,b=summary(res0)$coef[2,1], col="blue", lwd=2)
 abline(a=0,b=summary(res1)$coef[2,1], col="red", lwd=2)
-abline(a=0,b=summary(res2)$coef[2,1], col="green", lwd=2)
+abline(a=0,b=summary(res2)$coef[2,1], col="springgreen4", lwd=2)
 abline(a=0,b=1, col="green", lwd=4, lty=2)
 legend( x=-5, y=7,
         bty = "n",
         lty= c(1,1,1,2),
         legend=c("Linear model", "One sample instrument LASSO","CFI with LASSO" , "Truth"),
-        col= c("blue", "red","green", "green"),
+        col= c("blue", "red","springgreen4", "green"),
         lwd=rep(2,4))
 ```
 
