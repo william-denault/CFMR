@@ -67,7 +67,7 @@ plot(X,Y,
 
 res0 <- lm(Y~X)
 abline(a=0,b=summary(res0)$coef[2,1], col="blue", lwd=2)
-abline(a=0,b=1, col="green", lwd=2, lty=2)
+abline(a=0,b=1, col="green", lwd=4, lty=2)
 legend( x=-5, y=7,
         bty = "n",
         lty= c(1,1,1,2),
@@ -128,10 +128,6 @@ legend( x=-5, y=7,
         legend=c("Linear model", "One sample instrument LASSO","CFI with LASSO" , "Truth"),
         col= c("blue", "red","green", "green"),
         lwd=rep(2,4))
- #Linear model, obviously confouded effect, true effect is 1
- #One-sample LASSO, biased toward the confounded effect
- #CFI-LASSO, at worse bias toward the null
-
 
 
 ```

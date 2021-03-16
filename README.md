@@ -71,7 +71,7 @@ plot(X,Y,
 
 res0 <- lm(Y~X)
 abline(a=0,b=summary(res0)$coef[2,1], col="blue", lwd=2)
-abline(a=0,b=1, col="green", lwd=2, lty=2)
+abline(a=0,b=1, col="green", lwd=4, lty=2)
 legend( x=-5, y=7,
         bty = "n",
         lty= c(1,1,1,2),
@@ -139,12 +139,6 @@ legend( x=-5, y=7,
 ```
 
 ![](README_files/figure-gfm/pressure-1.png)<!-- -->
-
-``` r
- #Linear model, obviously confouded effect, true effect is 1
- #One-sample LASSO, biased toward the confounded effect
- #CFI-LASSO, at worse bias toward the null
-```
 
 The plot above shows the estimates of the effect of X on Y using
 different appraoches. CFI with LASSO (solid green line) is the closest
@@ -215,20 +209,6 @@ simu_cross_fit_IV_est <- function(n,p,np_act, h2, beta )
                                  c(1,0.7,0.7,1)
                   )
   )
-
-  
-  
-  #Hidden confounding
-  H <- rnorm(n)
-  #correlated noise 
-  noise <-rmvnorm(n, 
-                  mean = rep(0, 2), 
-                  sigma = matrix(nrow = 2,
-                                 byrow = TRUE,
-                                 c(1,0.2,0.2,1)
-                  )
-  )
-  
   
   
   V <- noise[,2]
